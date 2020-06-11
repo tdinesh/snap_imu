@@ -65,8 +65,9 @@ namespace snap_imu {
 
   void ImuNodelet::onInit() {
     ros::NodeHandle nh(getNodeHandle());
+    ros::NodeHandle pnh(getPrivateNodeHandle());
 
-    driver_.reset(new SnapImuDriver(nh));
+    driver_.reset(new SnapImuDriver(nh, pnh));
 
     if (driver_->Start()) {
       running_ = true;
@@ -79,7 +80,10 @@ namespace snap_imu {
   }
 
   void ImuNodelet::devicePoll() {
-    ros::Rate loop_rate(100);
+    ros::NodeHandle pnh(getPrivateNodeHandle());
+    int32_t rate;
+    pnh.param<int>("rate", rate, 100);
+    ros::Rate loop_rate(rate);
     while(running_){
       mutex.lock();
       driver_->Spin();

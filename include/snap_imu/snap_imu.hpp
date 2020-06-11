@@ -48,7 +48,7 @@
 
 class SnapImuDriver : public Snapdragon::Imu_IEventListener {
 public:
-  SnapImuDriver(ros::NodeHandle nh);
+  SnapImuDriver(ros::NodeHandle nh, ros::NodeHandle pnh);
   ~SnapImuDriver();
 
   bool Start();
@@ -79,6 +79,7 @@ public:
 protected:
 
   ros::NodeHandle nh_;
+  ros::NodeHandle pnh_;
   ros::Publisher imu_pub_;
   ros::Publisher imu_std_pub_;
   bool running_;

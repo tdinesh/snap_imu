@@ -36,10 +36,15 @@
 -->
 
 <launch>
+  <arg name="rate" default="150" />
+
   <node pkg="nodelet" type="nodelet" name="imu_nodelet_manager" args="manager" output="screen"/>
 
   <!-- imu driver nodelet -->
   <node pkg="nodelet" type="nodelet" name="snap_imu_nodelet"
 	args="load snap_imu/driver imu_nodelet_manager">
+    <param name="rate" value="$(arg rate)" />
+    <param name="frame_id" value="imu" />
   </node>
+
 </launch>

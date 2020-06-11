@@ -38,13 +38,16 @@
 int main (int argc, char **argv) {
   ros::init(argc, argv, "snap_imu");
   ros::NodeHandle nh;
+  ros::NodeHandle pnh("~");
 
-  SnapImuDriver snapimu(nh);
+  int32_t rate;
+  pnh.param<int>("rate", rate, 100);
+  ros::Rate loop_rate(rate);
+
+  SnapImuDriver snapimu(nh, pnh);
 
   if (!snapimu.Start())
     return -1;
-
-  ros::Rate loop_rate(100);
 
   while (ros::ok()) {
     snapimu.Spin();

@@ -33,10 +33,10 @@
  ****************************************************************************/
 
 #include "snap_imu/snap_imu.hpp"
-#include <sensor_msgs/Imu.h> 
+#include <sensor_msgs/Imu.h>
 
-SnapImuDriver::SnapImuDriver(ros::NodeHandle nh)
-  : nh_(nh) {
+SnapImuDriver::SnapImuDriver(ros::NodeHandle nh, ros::NodeHandle pnh)
+  : nh_(nh), pnh_(pnh) {
 
   running_=false;
   snap_imu_man_=nullptr;
@@ -49,10 +49,9 @@ SnapImuDriver::~SnapImuDriver(){
 
 
 bool SnapImuDriver::Start(){
-  std::cout << "Start" << std::endl;
+  ROS_INFO_STREAM("Start");
 
-  ros::NodeHandle pnh("~"); 
-  pnh.param<std::string>("frame_id", frame_id_, "imu");
+  pnh_.param<std::string>("frame_id", frame_id_, "imu");
 
   GetMonotonicClockOffset();
   advertiseTopics();
